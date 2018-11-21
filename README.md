@@ -2,7 +2,7 @@
 
 The code is based on the [DRAMCO EFM32-RN2483-LoRa-Node example](https://github.com/DRAMCO/EFM32-RN2483-LoRa-Node) with functions from [dbprint](https://github.com/Fescron/dbprint) aswell.
 
-The [DRAMCO tutorial](https://dramco.be/tutorials/low-power-iot/technology-campus-ghent-2018/iot-development-environment/node) is also handy.
+[This DRAMCO tutorial](https://dramco.be/tutorials/low-power-iot/technology-campus-ghent-2018/iot-development-environment/node) also has interesting info.
 
 ## 1- Installation instructions (Simplicity Studo v4)
 
