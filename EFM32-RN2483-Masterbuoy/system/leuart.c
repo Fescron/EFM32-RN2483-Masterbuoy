@@ -349,6 +349,7 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 			else
 			{
 				dbprintln("CRIT: All buffers full but still new data!!");
+				LED_ERROR(9);
 			}
 
 			/* Reset "notification" variable */
@@ -362,7 +363,7 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 		if (data0_ready && data1_ready && data2_ready && receiveBuffer0_used && receiveBuffer1_used && receiveBuffer2_used)
 		{
 			dbprintln("ERR: All of the data is ready and all of the buffers are filled!");
-			LED_ERROR(9);
+			LED_ERROR(10);
 		}
 		/* END ADDED CODE *******************************************************************************************/
 
@@ -371,8 +372,10 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 		/* Parse data if one of the buffers is used AND not all of the data-fields are filled */
 		if ((receiveBuffer0_used || receiveBuffer1_used || receiveBuffer2_used) && !(data0_ready && data1_ready && data2_ready))
 		{
-			char idBuf[3]; /* ID is by design 3 characters */
-			char rssiBuf[2]; /* RSSI is by design 2 characters */
+			char idBuf[4]; /* ID is by design 3 characters + NULL termination */
+			idBuf[3] = '\0'; /* NULL termination */
+			char rssiBuf[3]; /* RSSI is by design 2 characters + NULL termination */
+			rssiBuf[2] = '\0'; /* NULL termination */
 
 			/* Loop through the string and separate fields */
 			for (uint8_t i = 0; i < 5; i++)
@@ -396,8 +399,9 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 			 * "ready" and mark the buffer as "empty" */
 			if (!data0_ready)
 			{
-				id0 = charDec_to_uint32(idBuf);
-				rssi0 = charDec_to_uint32(rssiBuf);
+				/* Casting just in case */
+				id0 = (uint8_t)(charDec_to_uint32(idBuf));
+				rssi0 = (uint16_t)(charDec_to_uint32(rssiBuf));
 				data0_ready = true;
 				dbprint("INFO: data0_ready - ");
 
@@ -419,8 +423,9 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 			}
 			else if (!data1_ready)
 			{
-				id1 = charDec_to_uint32(idBuf);
-				rssi1 = charDec_to_uint32(rssiBuf);
+				/* Casting just in case */
+				id1 = (uint8_t)(charDec_to_uint32(idBuf));
+				rssi1 = (uint16_t)(charDec_to_uint32(rssiBuf));
 				data1_ready = true;
 				dbprint("INFO: data1_ready - ");
 
@@ -442,8 +447,9 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 			}
 			else if (!data2_ready)
 			{
-				id2 = charDec_to_uint32(idBuf);
-				rssi2 = charDec_to_uint32(rssiBuf);
+				/* Casting just in case */
+				id2 = (uint8_t)(charDec_to_uint32(idBuf));
+				rssi2 = (uint16_t)(charDec_to_uint32(rssiBuf));
 				data2_ready = true;
 				dbprint("INFO: data2_ready - ");
 

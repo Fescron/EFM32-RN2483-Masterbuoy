@@ -72,6 +72,9 @@ volatile bool wakeUp;
 
 /* BEGIN ADDED CODE *****************************************************************************************/
 volatile APP_State_t appState; /* before this was "static" aswell */
+
+/* Uncomment line below to skip errors were LoRa things are not successful */
+//#define SKIPLORA
 /* END ADDED CODE *******************************************************************************************/
 
 
@@ -102,8 +105,6 @@ volatile uint8_t id2 = 0;
 volatile uint16_t rssi2 = 0;
 volatile bool data2_ready = false;
 
-/* Uncomment line below to skip errors were LoRa things are not successful */
-//#define SKIPLORA
 /* END ADDED CODE *******************************************************************************************/
 
 
@@ -207,6 +208,7 @@ int main(void){
 #ifdef SKIPLORA
 					dbprintln("CRIT: Couldn't initialize LoRa communication but skipped for debugging");
 #else
+					dbprintln("CRIT: Couldn't initialize LoRa communication");
 					LED_ERROR(2);
 #endif
 					/* END ADDED CODE *******************************************************************************************/
@@ -242,9 +244,11 @@ int main(void){
 
 				// Initialize and fill LPP-formatted payload
 				if(!LPP_InitBuffer(&appData, 16)){
+					dbprintln("CRIT: Couldn't initialize LPP packet");
 					LED_ERROR(3);
 				}
 				if(!LPP_AddTemperature(&appData, tempLPP)){
+					dbprintln("CRIT: Couldn't add temperature to LPP packet");
 					LED_ERROR(4);
 				}
 				/*
@@ -263,7 +267,12 @@ int main(void){
 				if (data0_ready)
 				{
 					/* Add data to packets (go to error if not successful) */
-					if (!LPP_AddBuoy(&appData, id0, rssi0)) LED_ERROR(7);
+					if (!LPP_AddBuoy(&appData, id0, rssi0))
+					{
+						dbprintln("CRIT: Couldn't add data0 to LPP packet");
+						LED_ERROR(7);
+					}
+
 
 					/* Mark data buffer as free */
 					data0_ready = false;
@@ -274,7 +283,11 @@ int main(void){
 				if (data1_ready)
 				{
 					/* Add data to packets (go to error if not successful) */
-					if (!LPP_AddBuoy(&appData, id1, rssi1)) LED_ERROR(7);
+					if (!LPP_AddBuoy(&appData, id1, rssi1))
+					{
+						dbprintln("CRIT: Couldn't add data1 to LPP packet");
+						LED_ERROR(7);
+					}
 
 					/* Mark data buffer as free */
 					data1_ready = false;
@@ -285,7 +298,11 @@ int main(void){
 				if (data2_ready)
 				{
 					/* Add data to packets (go to error if not successful) */
-					if (!LPP_AddBuoy(&appData, id2, rssi2)) LED_ERROR(7);
+					if (!LPP_AddBuoy(&appData, id2, rssi2))
+					{
+						dbprintln("CRIT: Couldn't add data2 to LPP packet");
+						LED_ERROR(7);
+					}
 
 					/* Mark data buffer as free */
 					data2_ready = false;
@@ -301,6 +318,7 @@ int main(void){
 #ifdef SKIPLORA
 					dbprintln("CRIT: Couldn't send LPP-formatted payload but skipped for debugging");
 #else
+					dbprintln("CRIT: Couldn't send LPP-formatted payload");
 					LED_ERROR(8);
 #endif
 					/* END ADDED CODE *******************************************************************************************/
@@ -318,7 +336,10 @@ int main(void){
 
 				// Sleep for a specified period of time;
 				wakeUp = false;
+				/* BEGIN ADDED CODE *****************************************************************************************/
+				/* Go some levels down in this method!! (added code in "Leuart_SendCommand") */
 				LoRa_Sleep(5*A_MINUTE, &wakeUp);
+				/* END ADDED CODE *******************************************************************************************/
 
 				// wake up because of button pressed
 				if(wakeUp){ // get out of bed early
