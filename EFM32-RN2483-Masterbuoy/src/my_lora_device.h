@@ -55,9 +55,9 @@
 /* 64-bit device ID */
 #define LORAWAN_DEVICE_EUI			"0000000000000000"
 /* 64-bit application ID */
-#define LORAWAN_APPLICATION_EUI     "0000000000000000"
+#define LORAWAN_APPLICATION_EUI     		"0000000000000000"
 /* 128-bit AES key */
-#define LORAWAN_APPLICATION_KEY     "00000000000000000000000000000000"
+#define LORAWAN_APPLICATION_KEY     		"00000000000000000000000000000000"
 /* END ADDED CODE *******************************************************************************************/
 
 // Don't change

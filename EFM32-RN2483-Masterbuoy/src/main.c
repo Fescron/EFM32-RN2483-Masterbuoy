@@ -33,7 +33,7 @@
 /* BEGIN ADDED CODE *****************************************************************************************/
 /* NOTES:
  *
- *   Added code in the following files:
+ *   Added code in the following files when starting from the DRAMCO example:
  *     - my_lora_device.h ("LORAWAN_DEVICE_EUI", "LORAWAN_APPLICATION_EUI" and "LORAWAN_APPLICATION_KEY" hidden)
  *     - lpp.c
  *     - lpp.h
@@ -45,6 +45,13 @@
  */
 #include "dbprint.h" /* Homebrew printf */
 #include "../src/main.h"
+
+/* Uncomment line below to skip errors were LoRa things are not successful */
+//#define SKIPLORA
+
+/* Comment line below to route UART1 RX to PC1 (EXP HEADER pin 5) and UART1 TX to PC0 (EXP HEADER pin 3) instead of VCOM */
+//#define VCOM
+
 /* END ADDED CODE *******************************************************************************************/
 
 
@@ -70,15 +77,11 @@
 volatile uint8_t errorNr = 0;
 volatile bool wakeUp;
 
-/* BEGIN ADDED CODE *****************************************************************************************/
-volatile APP_State_t appState; /* before this was "static" aswell */
-
-/* Uncomment line below to skip errors were LoRa things are not successful */
-//#define SKIPLORA
-/* END ADDED CODE *******************************************************************************************/
-
 
 /* BEGIN ADDED CODE *****************************************************************************************/
+volatile APP_State_t appState; /* In DRAMCO example this was "static" too */
+
+
 /* Global variables */
 
 /* Buffers to parse data from, local copy just in case new data is received using interrupts */
@@ -94,16 +97,14 @@ volatile bool receiveBuffer2_used = false;
 
 /* Parsed buffer data */
 volatile uint8_t id0 = 0;
-volatile uint16_t rssi0 = 0;
+volatile uint8_t rssi0 = 0;
+volatile uint16_t vbat0 = 0;
 volatile bool data0_ready = false; /* If true: ready to pack in a LPP packet */
 
 volatile uint8_t id1 = 0;
-volatile uint16_t rssi1 = 0;
+volatile uint8_t rssi1 = 0;
+volatile uint16_t vbat1 = 0;
 volatile bool data1_ready = false;
-
-volatile uint8_t id2 = 0;
-volatile uint16_t rssi2 = 0;
-volatile bool data2_ready = false;
 
 /* END ADDED CODE *******************************************************************************************/
 
@@ -172,8 +173,13 @@ int main(void){
 				System_Init();
 
 				/* BEGIN ADDED CODE *****************************************************************************************/
+#ifdef VCOM
 				/* Initialize VCOM UART in interrupt mode */
 				dbprint_INIT(USART1, 4, true, true);
+#else
+				/* Initialize UART in interrupt mode */
+				dbprint_INIT(USART1, 0, false, true);
+#endif
 				dbprintln("> INIT");
 				/* END ADDED CODE *******************************************************************************************/
 
@@ -199,20 +205,19 @@ int main(void){
 			case JOIN:{
 				/* BEGIN ADDED CODE *****************************************************************************************/
 				dbprintln("> JOIN");
-				/* END ADDED CODE *******************************************************************************************/
 
 				/* Initialize LoRa communication */
 				loraStatus = LoRa_Init(loraSettings);
-				if(loraStatus != JOINED){
-					/* BEGIN ADDED CODE *****************************************************************************************/
+
 #ifdef SKIPLORA
-					dbprintln("CRIT: Couldn't initialize LoRa communication but skipped for debugging");
+			    dbprintln("WARN: Skipped LoRa initialization for debugging");
 #else
+				if(loraStatus != JOINED){
 					dbprintln("CRIT: Couldn't initialize LoRa communication");
 					LED_ERROR(2);
-#endif
-					/* END ADDED CODE *******************************************************************************************/
 				}
+#endif
+				/* END ADDED CODE *******************************************************************************************/
 				appState = MEASURE;
 			} break;
 			case MEASURE:{
@@ -238,20 +243,20 @@ int main(void){
 
 				/* Send measurement data to "the cloud" */
 				// Convert sensor readings to LPP format
-				int16_t tempLPP = (int16_t)(round((float)tData/100));
-				uint8_t humidityLPP = (uint8_t)(rhData/500);
-				int16_t batteryLPP = (int16_t)(round((float)batteryLevel/10));
+				//int16_t tempLPP = (int16_t)(round((float)tData/100));
+				// uint8_t humidityLPP = (uint8_t)(rhData/500);
+				// int16_t batteryLPP = (int16_t)(round((float)batteryLevel/10));
 
 				// Initialize and fill LPP-formatted payload
 				if(!LPP_InitBuffer(&appData, 16)){
 					dbprintln("CRIT: Couldn't initialize LPP packet");
 					LED_ERROR(3);
 				}
+				/*
 				if(!LPP_AddTemperature(&appData, tempLPP)){
 					dbprintln("CRIT: Couldn't add temperature to LPP packet");
 					LED_ERROR(4);
 				}
-				/*
 				if(!LPP_AddHumidity(&appData, humidityLPP)){
 					LED_ERROR(5);
 				}
@@ -266,13 +271,14 @@ int main(void){
 
 				if (data0_ready)
 				{
-					/* Add data to packets (go to error if not successful) */
-					if (!LPP_AddBuoy(&appData, id0, rssi0))
+					/* Add data to packet (go to error if not successful)
+					 *   NOTE: The VBAT value gets send to Cayenne with an ID-offset of "1"!
+					 */
+					if (!LPP_AddBuoy(&appData, id0, rssi0, vbat0))
 					{
 						dbprintln("CRIT: Couldn't add data0 to LPP packet");
 						LED_ERROR(7);
 					}
-
 
 					/* Mark data buffer as free */
 					data0_ready = false;
@@ -282,8 +288,10 @@ int main(void){
 
 				if (data1_ready)
 				{
-					/* Add data to packets (go to error if not successful) */
-					if (!LPP_AddBuoy(&appData, id1, rssi1))
+					/* Add data to packet (go to error if not successful)
+					 *   NOTE: The VBAT value gets send to Cayenne with an ID-offset of "1"!
+					 */
+					if (!LPP_AddBuoy(&appData, id1, rssi1, vbat1))
 					{
 						dbprintln("CRIT: Couldn't add data1 to LPP packet");
 						LED_ERROR(7);
@@ -295,36 +303,21 @@ int main(void){
 					dbprintln("INFO: data1 added to LPP packet");
 				}
 
-				if (data2_ready)
-				{
-					/* Add data to packets (go to error if not successful) */
-					if (!LPP_AddBuoy(&appData, id2, rssi2))
-					{
-						dbprintln("CRIT: Couldn't add data2 to LPP packet");
-						LED_ERROR(7);
-					}
-
-					/* Mark data buffer as free */
-					data2_ready = false;
-
-					dbprintln("INFO: data2 added to LPP packet");
-				}
-
-				/* END ADDED CODE *******************************************************************************************/
-
 				// Send LPP-formatted payload
 				if(LoRa_SendLppBuffer(appData, LORA_UNCONFIMED) != SUCCESS){
-					/* BEGIN ADDED CODE *****************************************************************************************/
 #ifdef SKIPLORA
-					dbprintln("CRIT: Couldn't send LPP-formatted payload but skipped for debugging");
+					dbprintln("WARN: Couldn't send LPP-formatted payload but skipped for debugging");
 #else
 					dbprintln("CRIT: Couldn't send LPP-formatted payload");
 					LED_ERROR(8);
 #endif
-					/* END ADDED CODE *******************************************************************************************/
 				}
+				else
+				{
+					dbprintln("INFO: LPP packet send successfully");
+				}
+				/* END ADDED CODE *******************************************************************************************/
 
-				dbprintln("INFO: LPP packet send successfully");
 
 				// Go to sleep
 				appState = SLEEP;
@@ -337,8 +330,16 @@ int main(void){
 				// Sleep for a specified period of time;
 				wakeUp = false;
 				/* BEGIN ADDED CODE *****************************************************************************************/
-				/* Go some levels down in this method!! (added code in "Leuart_SendCommand") */
+
+				/* IMPORTANT! Go some levels "down" in this method!
+				 *   LoRa_Sleep > RN2483_Sleep > RN2483_ProcessSleepCommand > Leuart_SendCommand (added code in this method) */
+
+#ifdef SKIPLORA
+				LoRa_Sleep(A_MINUTE, &wakeUp);
+#else
 				LoRa_Sleep(5*A_MINUTE, &wakeUp);
+#endif
+
 				/* END ADDED CODE *******************************************************************************************/
 
 				// wake up because of button pressed

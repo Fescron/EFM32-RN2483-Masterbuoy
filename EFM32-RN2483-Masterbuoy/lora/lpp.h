@@ -67,7 +67,7 @@ bool LPP_AddAccelerometer(LPP_Buffer_t *b, int16_t x, int16_t y, int16_t z);
 bool LPP_AddPressure(LPP_Buffer_t *b, uint16_t data);
 
 /* BEGIN ADDED CODE *****************************************************************************************/
-bool LPP_AddBuoy(LPP_Buffer_t *b, uint8_t id, uint16_t rssi);
+bool LPP_AddBuoy(LPP_Buffer_t *b, uint8_t id, uint8_t rssi, uint16_t vbat);
 /* END ADDED CODE *******************************************************************************************/
 
 #endif /* _LPP_H_ */

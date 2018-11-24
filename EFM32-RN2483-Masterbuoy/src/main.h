@@ -38,16 +38,14 @@ extern volatile bool receiveBuffer2_used;
 
 /* Parsed buffer data */
 extern volatile uint8_t id0;
-extern volatile uint16_t rssi0;
+extern volatile uint8_t rssi0;
+extern volatile uint16_t vbat0;
 extern volatile bool data0_ready; /* If true: ready to pack in a LPP packet */
 
 extern volatile uint8_t id1;
-extern volatile uint16_t rssi1;
+extern volatile uint8_t rssi1;
+extern volatile uint16_t vbat1;
 extern volatile bool data1_ready;
-
-extern volatile uint8_t id2;
-extern volatile uint16_t rssi2;
-extern volatile bool data2_ready;
 
 
 /* Prototypes */

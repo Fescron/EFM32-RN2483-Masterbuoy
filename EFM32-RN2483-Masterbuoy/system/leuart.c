@@ -309,7 +309,8 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 	while(!Leuart_ResponseAvailable() && !timeout && !(*wakeUp)){
 		//EMU_EnterEM2(true);
 
-		/* BEGIN ADDED CODE *****************************************************************************************/
+		/* BEGIN ADDED CODE (interrupt handling) *****************************************************************************************/
+
 		/* Data is ready (notified by the RX handler) */
 		if (dbprint_rxdata)
 		{
@@ -334,16 +335,28 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 				{
 					receiveBuffer0_used = true;
 					dbprintln("INFO: receiveBuffer0_used");
+					if (data0_ready && data1_ready && receiveBuffer0_used && receiveBuffer1_used && receiveBuffer2_used)
+					{
+						dbprintln("WARN: All of the data is ready and all of the buffers are filled!");
+					}
 				}
 				else if (!receiveBuffer1_used)
 				{
 					receiveBuffer1_used = true;
 					dbprintln("INFO: receiveBuffer1_used");
+					if (data0_ready && data1_ready && receiveBuffer0_used && receiveBuffer1_used && receiveBuffer2_used)
+					{
+						dbprintln("WARN: All of the data is ready and all of the buffers are filled!");
+					}
 				}
 				else if (!receiveBuffer2_used)
 				{
 					receiveBuffer2_used = true;
 					dbprintln("INFO: receiveBuffer2_used");
+					if (data0_ready && data1_ready && receiveBuffer0_used && receiveBuffer1_used && receiveBuffer2_used)
+					{
+						dbprintln("WARN: All of the data is ready and all of the buffers are filled!");
+					}
 				}
 			}
 			else
@@ -360,38 +373,44 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 			USART_IntEnable(dbpointer, USART_IEN_TXC);
 		}
 
-		if (data0_ready && data1_ready && data2_ready && receiveBuffer0_used && receiveBuffer1_used && receiveBuffer2_used)
-		{
-			dbprintln("ERR: All of the data is ready and all of the buffers are filled!");
-			LED_ERROR(10);
-		}
-		/* END ADDED CODE *******************************************************************************************/
+		/* END ADDED CODE (interrupt handling) *******************************************************************************************/
 
 
-		/* BEGIN ADDED CODE *****************************************************************************************/
+		/* BEGIN ADDED CODE (parsing) *****************************************************************************************/
+
 		/* Parse data if one of the buffers is used AND not all of the data-fields are filled */
-		if ((receiveBuffer0_used || receiveBuffer1_used || receiveBuffer2_used) && !(data0_ready && data1_ready && data2_ready))
+		if ((receiveBuffer0_used || receiveBuffer1_used || receiveBuffer2_used) && !(data0_ready && data1_ready))
 		{
 			char idBuf[4]; /* ID is by design 3 characters + NULL termination */
 			idBuf[3] = '\0'; /* NULL termination */
 			char rssiBuf[3]; /* RSSI is by design 2 characters + NULL termination */
 			rssiBuf[2] = '\0'; /* NULL termination */
+			char vbatBuf[4]; /* VBAT is by design3 characters + NULL termination */
+			vbatBuf[3] = '\0'; /* NULL termination */
 
 			/* Loop through the string and separate fields */
-			for (uint8_t i = 0; i < 5; i++)
+			for (uint8_t i = 0; i < 8; i++)
 			{
-				/* First 4 characters = ID */
+				/* First 3 characters = ID */
 				if (i < 3)
 				{
 					if (receiveBuffer0_used) idBuf[i] = receiveBuffer0[i];
 					else if (receiveBuffer1_used) idBuf[i] = receiveBuffer1[i];
 					else if (receiveBuffer2_used) idBuf[i] = receiveBuffer2[i];
 				}
-				/* Last 2 characters = RSSI */
-				else {
+				/* Next 2 characters = RSSI */
+				else if ((i > 2) && (i < 5))
+				{
 					if (receiveBuffer0_used) rssiBuf[i-3] = receiveBuffer0[i];
 					else if (receiveBuffer1_used) rssiBuf[i-3] = receiveBuffer1[i];
 					else if (receiveBuffer2_used) rssiBuf[i-3] = receiveBuffer2[i];
+				}
+				/* Next (last) 3 characters = VBAT */
+				else if ((i > 4) && (i < 8))
+				{
+					if (receiveBuffer0_used) vbatBuf[i-5] = receiveBuffer0[i];
+					else if (receiveBuffer1_used) vbatBuf[i-5] = receiveBuffer1[i];
+					else if (receiveBuffer2_used) vbatBuf[i-5] = receiveBuffer2[i];
 				}
 			}
 
@@ -401,7 +420,8 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 			{
 				/* Casting just in case */
 				id0 = (uint8_t)(charDec_to_uint32(idBuf));
-				rssi0 = (uint16_t)(charDec_to_uint32(rssiBuf));
+				rssi0 = (uint8_t)(charDec_to_uint32(rssiBuf));
+				vbat0 = (uint16_t)(charDec_to_uint32(vbatBuf));
 				data0_ready = true;
 				dbprint("INFO: data0_ready - ");
 
@@ -425,7 +445,8 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 			{
 				/* Casting just in case */
 				id1 = (uint8_t)(charDec_to_uint32(idBuf));
-				rssi1 = (uint16_t)(charDec_to_uint32(rssiBuf));
+				rssi1 = (uint8_t)(charDec_to_uint32(rssiBuf));
+				vbat1 = (uint16_t)(charDec_to_uint32(vbatBuf));
 				data1_ready = true;
 				dbprint("INFO: data1_ready - ");
 
@@ -445,38 +466,14 @@ Leuart_Status_t Leuart_SendCommand(char * cb, uint8_t cbl, volatile bool * wakeU
 					dbprintln("receiveBuffer2 is free");
 				}
 			}
-			else if (!data2_ready)
-			{
-				/* Casting just in case */
-				id2 = (uint8_t)(charDec_to_uint32(idBuf));
-				rssi2 = (uint16_t)(charDec_to_uint32(rssiBuf));
-				data2_ready = true;
-				dbprint("INFO: data2_ready - ");
-
-				if (receiveBuffer0_used)
-				{
-					receiveBuffer0_used = false;
-					dbprintln("receiveBuffer0 is free");
-				}
-				else if (receiveBuffer1_used)
-				{
-					receiveBuffer1_used = false;
-					dbprintln("receiveBuffer1 is free");
-				}
-				else if (receiveBuffer2_used)
-				{
-					receiveBuffer2_used = false;
-					dbprintln("receiveBuffer2 is free");
-				}
-
-				dbprintln("WARN: All of the data is ready!");
-			}
 			else
 			{
 				dbprintln("CRIT: Tried to store new data, no more space!");
+				LED_ERROR(10);
 			}
 		}
-		/* END ADDED CODE *******************************************************************************************/
+
+		/* END ADDED CODE (parsing) *******************************************************************************************/
 	}
 	/* END ADDED CODE *******************************************************************************************/
 
