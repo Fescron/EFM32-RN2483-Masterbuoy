@@ -32,25 +32,29 @@ This code receives messages over UART (**115200 baudrate**) using interrupts, pa
 
 #### 1.1.2 - Processes on the flowchart
 - **INIT:**
-  - Initialize system & chip (clocks, ...)
-  - Initialize delay function
-  - Initialize interrupts (IRQ)
+  - Initialize system & chip (clocks, ...).
+  - Initialize delay function.
+  - Initialize interrupts (IRQ).
   - Initialize LED functions to give feedback when there is an error.
-  - Initialize buttons and their interrupt functionality
-  - Initialize power management
-  - Initialize ADC for reading the battery voltage
-  - Initialize I²C for sensor readout
+  - Initialize buttons and their interrupt functionality.
+  - Initialize power management.
+  - Initialize ADC for reading the battery voltage.
+  - Initialize I²C for sensor readout.
   - Initialize UART using dbprint functionality for:
-    - Printing debug messages
-    - Getting input using interrupts
-    - Parsing characters to values
+    - Printing debug messages.
+    - Getting input using interrupts.
+    - Parsing characters to values.
 - **JOIN:**
-  - Initialize LoRaWAN communications with *Over The Air Activation* (OTAA)
+  - Initialize LoRaWAN communications with *Over The Air Activation* (OTAA).
 - **MEASURE:**
-  - Read battery voltage
-  - Read relative humidity
-  - Read temperature
+  - Read battery voltage.
+  - Read relative humidity.
+  - Read temperature.
     - **NOTE:** The sensor readouts are not really used since we have a limited amount of bytes we can send to the cloud.
+- **SEND:**
+  - See flowchart.
+- **SLEEP:**
+  - See flowchart.
 
 ### 1.2 - Structure of messages
 
