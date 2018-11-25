@@ -26,7 +26,7 @@ This code receives messages over UART (**115200 baudrate**) using interrupts, pa
 #### 1.1.1 - Extra notes on the flowchart
 - **(\*1):** If there was a line received using interrupts on UART *AND* there is at least one of the three buffers free, copy the received data to one of those buffers.
 - **(\*2):** Check if **one (of three)** or more buffers are filled *AND* at least one of the two data fields are free.
-- **(\*3):** Parse the data out of a used buffer into a data field.
+- **(\*3):** Parse the data out of a used buffer into a free data field.
 
 #### 1.1.2 - Processes on the flowchart
 - **INIT:**
