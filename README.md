@@ -29,7 +29,7 @@ The following flowchart mostly describes the added functionality. For the sake o
 
 #### 1.1.1 - Extra notes on the flowchart
 - **(\*1):** If there was a line received using interrupts on UART *AND* there is at least one of the three buffers free, copy the received data to one of those buffers.
-- **(\*2):** Check if **one (of three)** or more buffers are filled *AND* at least one of the two data fields are free.
+- **(\*2):** Check if **one (of three)** or more buffers are filled *AND* at least one of the two data fields (```data0``` and ```data1```) are free.
 - **(\*3):** Parse the data out of a used buffer into a free data field.
 
 #### 1.1.2 - Processes (= states of the logic) on the flowchart
