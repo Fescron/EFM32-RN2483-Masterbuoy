@@ -44,19 +44,21 @@
             \node (measure) [process, below of=init, yshift=-0.5cm] {MEASURE};
             \node (send) [process, below of=measure] {SEND};
 
-            \node (lppInit) [subroutine, below of=send, xshift=2cm] {Init LPP buffer};
+            \node (dataReady) [decision, below of=send, xshift=2cm, yshift=-1cm] {Data0/1 ready?};
+
+            \node (lppInit) [subroutine, below of=dataReady, yshift=-1.2cm] {Init LPP buffer};
             \node (bar) [bar={lppInit}] at (lppInit.west) {};
             \node (bar) [bar={lppInit}] at (lppInit.east) {};
 
             \node (data0) [decision, below of=lppInit, yshift=-1cm] {Data0 ready?};
 
-            \node (addData0) [subroutine, right of=data0, xshift=2.5cm] {Add data0 to LPP packet};
+            \node (addData0) [subroutine, right of=data0, xshift=2.5cm] {Add data0 to LPP packet and mark data0 as unused};
             \node (bar) [bar={addData0}] at (addData0.west) {};
             \node (bar) [bar={addData0}] at (addData0.east) {};
 
             \node (data1) [decision, below of=data0, yshift=-2.2cm] {Data1 ready?};
 
-            \node (addData1) [subroutine, right of=data1, xshift=2.5cm] {Add data1 to LPP packet};
+            \node (addData1) [subroutine, right of=data1, xshift=2.5cm] {Add data1 to LPP packet and mark data1 as unused};
             \node (bar) [bar={addData1}] at (addData1.west) {};
             \node (bar) [bar={addData1}] at (addData1.east) {};
 
@@ -76,7 +78,7 @@
             \node (bar) [bar={disableInt}] at (disableInt.west) {};
             \node (bar) [bar={disableInt}] at (disableInt.east) {};
 
-            \node (copyData) [subroutine, below of=disableInt] {Copy data (\textbf{*1})};
+            \node (copyData) [subroutine, below of=disableInt] {Copy data to a free buffer (\textbf{*1})};
             \node (bar) [bar={copyData}] at (copyData.west) {};
             \node (bar) [bar={copyData}] at (copyData.east) {};
 
@@ -87,7 +89,7 @@
 
             \node (bufferFilled) [decision, below of=dataReceived, yshift=-5cm] {Buffer full? (\textbf{*2})};
 
-            \node (parseData) [subroutine, right of=bufferFilled, xshift=2.7cm] {Parse data (\textbf{*3})};
+            \node (parseData) [subroutine, right of=bufferFilled, xshift=2.7cm] {Parse data in a buffer to a free data field (\textbf{*3})};
             \node (bar) [bar={parseData}] at (parseData.west) {};
             \node (bar) [bar={parseData}] at (parseData.east) {};
 
@@ -99,8 +101,12 @@
             
             \draw [arrow] (join) |- ([shift={(-1cm,-0.5cm)}]join.south) -| (measure);
             \draw [arrow] (measure) -- (send);
-            \draw [arrow] (send) -| (lppInit);
-            \draw [arrow] (lppInit) -- (data0);
+
+            \draw [arrow] (send) -| (dataReady);
+            \draw [arrow] (dataReady) -- node[anchor=east] {yes} (lppInit);
+            \draw [arrow] (dataReady) -| ([shift={(2.2cm,5.2cm)}]dataReady.south) -| node[anchor=east, xshift=-6.3cm, yshift=-3.3cm] {no} (sleep);
+
+            \draw [arrow] (lppInit) --  (data0);
 
             \draw [arrow] (data0) -- node[anchor=south] {yes} (addData0);
             \draw [arrow] (data0) -- node[anchor=east] {no} (data1);

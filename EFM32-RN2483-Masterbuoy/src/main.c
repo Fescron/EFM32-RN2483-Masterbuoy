@@ -239,83 +239,89 @@ int main(void){
 			case SEND_MEASUREMENTS:{
 				/* BEGIN ADDED CODE *****************************************************************************************/
 				dbprintln("> SEND MEASUREMENTS");
-				/* END ADDED CODE *******************************************************************************************/
 
 				/* Send measurement data to "the cloud" */
+
 				// Convert sensor readings to LPP format
 				//int16_t tempLPP = (int16_t)(round((float)tData/100));
 				// uint8_t humidityLPP = (uint8_t)(rhData/500);
 				// int16_t batteryLPP = (int16_t)(round((float)batteryLevel/10));
 
-				// Initialize and fill LPP-formatted payload
-				if(!LPP_InitBuffer(&appData, 16)){
-					dbprintln("CRIT: Couldn't initialize LPP packet");
-					LED_ERROR(3);
-				}
-				/*
-				if(!LPP_AddTemperature(&appData, tempLPP)){
-					dbprintln("CRIT: Couldn't add temperature to LPP packet");
-					LED_ERROR(4);
-				}
-				if(!LPP_AddHumidity(&appData, humidityLPP)){
-					LED_ERROR(5);
-				}
-				if(!LPP_AddAnalog(&appData, batteryLPP)){
-					LED_ERROR(6);
-				}
-				*/
-
-				/* BEGIN ADDED CODE *****************************************************************************************/
-
-				/* Add ready data to LPP packets */
-
-				if (data0_ready)
+				if (data0_ready || data1_ready)
 				{
-					/* Add data to packet (go to error if not successful)
-					 *   NOTE: The VBAT value gets send to Cayenne with an ID-offset of "1"!
-					 */
-					if (!LPP_AddBuoy(&appData, id0, rssi0, vbat0))
+					// Initialize and fill LPP-formatted payload
+					if(!LPP_InitBuffer(&appData, 16)){
+						dbprintln("CRIT: Couldn't initialize LPP packet");
+						LED_ERROR(3);
+					}
+					/*
+					if(!LPP_AddTemperature(&appData, tempLPP)){
+						dbprintln("CRIT: Couldn't add temperature to LPP packet");
+						LED_ERROR(4);
+					}
+					if(!LPP_AddHumidity(&appData, humidityLPP)){
+						LED_ERROR(5);
+					}
+					if(!LPP_AddAnalog(&appData, batteryLPP)){
+						LED_ERROR(6);
+					}
+					*/
+
+					/* Add ready data to LPP packets */
+
+					if (data0_ready)
 					{
-						dbprintln("CRIT: Couldn't add data0 to LPP packet");
-						LED_ERROR(7);
+						/* Add data to packet (go to error if not successful)
+						 *   NOTE: The VBAT value gets send to Cayenne with an ID-offset of "1"!
+						 */
+						if (!LPP_AddBuoy(&appData, id0, rssi0, vbat0))
+						{
+							dbprintln("CRIT: Couldn't add data0 to LPP packet");
+							LED_ERROR(7);
+						}
+
+						/* Mark data buffer as free */
+						data0_ready = false;
+
+						dbprintln("INFO: data0 added to LPP packet");
 					}
 
-					/* Mark data buffer as free */
-					data0_ready = false;
-
-					dbprintln("INFO: data0 added to LPP packet");
-				}
-
-				if (data1_ready)
-				{
-					/* Add data to packet (go to error if not successful)
-					 *   NOTE: The VBAT value gets send to Cayenne with an ID-offset of "1"!
-					 */
-					if (!LPP_AddBuoy(&appData, id1, rssi1, vbat1))
+					if (data1_ready)
 					{
-						dbprintln("CRIT: Couldn't add data1 to LPP packet");
-						LED_ERROR(7);
+						/* Add data to packet (go to error if not successful)
+						 *   NOTE: The VBAT value gets send to Cayenne with an ID-offset of "1"!
+						 */
+						if (!LPP_AddBuoy(&appData, id1, rssi1, vbat1))
+						{
+							dbprintln("CRIT: Couldn't add data1 to LPP packet");
+							LED_ERROR(7);
+						}
+
+						/* Mark data buffer as free */
+						data1_ready = false;
+
+						dbprintln("INFO: data1 added to LPP packet");
 					}
 
-					/* Mark data buffer as free */
-					data1_ready = false;
-
-					dbprintln("INFO: data1 added to LPP packet");
-				}
-
-				// Send LPP-formatted payload
-				if(LoRa_SendLppBuffer(appData, LORA_UNCONFIMED) != SUCCESS){
-#ifdef SKIPLORA
-					dbprintln("WARN: Couldn't send LPP-formatted payload but skipped for debugging");
-#else
-					dbprintln("CRIT: Couldn't send LPP-formatted payload");
-					LED_ERROR(8);
-#endif
+					// Send LPP-formatted payload
+					if(LoRa_SendLppBuffer(appData, LORA_UNCONFIMED) != SUCCESS){
+	#ifdef SKIPLORA
+						dbprintln("WARN: Couldn't send LPP-formatted payload but skipped for debugging");
+	#else
+						dbprintln("CRIT: Couldn't send LPP-formatted payload");
+						LED_ERROR(8);
+	#endif
+					}
+					else
+					{
+						dbprintln("INFO: LPP packet send successfully");
+					}
 				}
 				else
 				{
-					dbprintln("INFO: LPP packet send successfully");
+					dbprintln("INFO: No data to send");
 				}
+
 				/* END ADDED CODE *******************************************************************************************/
 
 
