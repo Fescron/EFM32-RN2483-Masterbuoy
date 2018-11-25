@@ -1,8 +1,8 @@
 # EFM32-RN2483-Masterbuoy
 
-The code is based on the [DRAMCO EFM32-RN2483-LoRa-Node example](https://github.com/DRAMCO/EFM32-RN2483-LoRa-Node) with functions from [dbprint](https://github.com/Fescron/dbprint) aswell. Added code is marked with ```/* BEGIN ADDED CODE ********/``` and ```/* END ADDED CODE ********/```.
+The code is based on the [DRAMCO EFM32-RN2483-LoRa-Node example](https://github.com/DRAMCO/EFM32-RN2483-LoRa-Node) with functions from [dbprint](https://github.com/Fescron/dbprint) aswell. 
 
-Code was added in the following files when starting from the DRAMCO example:
+Added code is marked with ```/* BEGIN ADDED CODE ********/``` and ```/* END ADDED CODE ********/```. Code was added in the following files when starting from the DRAMCO example:
 - ```my_lora_device.h``` (```LORAWAN_DEVICE_EUI```, ```LORAWAN_APPLICATION_EUI``` and ```LORAWAN_APPLICATION_KEY``` hidden)
 - ```lpp.c```
 - ```lpp.h```
