@@ -1,0 +1,137 @@
+% Use in other document:
+%   \usepackage{standalone}						% Inport standalone documents
+%
+%   \input{foldername/flowchart}
+
+\documentclass[class=article, float=false, crop=false]{standalone} 
+% enkel figuur: alle argumenten verwijderen alsook center, figure en caption
+
+\usepackage{geometry}
+\geometry{a3paper, landscape}
+
+\usepackage[english]{babel}                   % Culturally-determined typographical rules
+\usepackage[utf8x]{inputenc}                % Input accents characters from keyboard
+\usepackage[labelfont=bf]{caption}          % Caption labels in bold
+
+% !!!! Also put the following in the main tex file:
+\usepackage{tikz}							% Block diagram
+\usetikzlibrary{shapes.geometric, arrows, positioning, fit}   % Block diagram
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, text width=3cm, draw=black, fill=orange!30]
+
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\tikzstyle{subroutine} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, text width=3cm, draw=black, fill=orange!80]
+\tikzstyle{bar} 1 args = [ fill=orange!80, draw = black, fit={(#1.south) (#1.north)}, inner ysep=0pt] % Use with subroutine: \node (bar) [bar={sub1}] at (sub1.west) {}; or `east'
+
+
+\begin{document}
+
+\begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}[node distance=1.5cm]
+
+            % NODES
+            \node (start) [startstop] {Startup};
+            \node (init) [process, below of=start] {INIT};
+            \node (join) [process, right of=init, xshift = 2.5cm] {JOIN};
+            \node (measure) [process, below of=init, yshift=-0.5cm] {MEASURE};
+            \node (send) [process, below of=measure] {SEND};
+
+            \node (lppInit) [subroutine, below of=send, xshift=2cm] {Init LPP buffer};
+            \node (bar) [bar={lppInit}] at (lppInit.west) {};
+            \node (bar) [bar={lppInit}] at (lppInit.east) {};
+
+            \node (data0) [decision, below of=lppInit, yshift=-1cm] {Data0 ready?};
+
+            \node (addData0) [subroutine, right of=data0, xshift=2.5cm] {Add data0 to LPP packet};
+            \node (bar) [bar={addData0}] at (addData0.west) {};
+            \node (bar) [bar={addData0}] at (addData0.east) {};
+
+            \node (data1) [decision, below of=data0, yshift=-2.2cm] {Data1 ready?};
+
+            \node (addData1) [subroutine, right of=data1, xshift=2.5cm] {Add data1 to LPP packet};
+            \node (bar) [bar={addData1}] at (addData1.west) {};
+            \node (bar) [bar={addData1}] at (addData1.east) {};
+
+            \node (lppSend) [subroutine, below of=data1, yshift=-1.2cm] {Send LPP buffer};
+            \node (bar) [bar={lppSend}] at (lppSend.west) {};
+            \node (bar) [bar={lppSend}] at (lppSend.east) {};
+
+
+
+            \node (sleep) [process, right of=send, xshift=9cm] {SLEEP};
+
+            \node (while) [decision, below of=sleep, xshift=2cm, yshift=-1cm] {Still sleeping?};
+
+            \node (dataReceived) [decision, below of=while, yshift=-2.2cm] {Data received?};
+
+            \node (disableInt) [subroutine, right of=dataReceived, xshift=2.7cm] {Disable interrupts};
+            \node (bar) [bar={disableInt}] at (disableInt.west) {};
+            \node (bar) [bar={disableInt}] at (disableInt.east) {};
+
+            \node (copyData) [subroutine, below of=disableInt] {Copy data (\textbf{*1})};
+            \node (bar) [bar={copyData}] at (copyData.west) {};
+            \node (bar) [bar={copyData}] at (copyData.east) {};
+
+            \node (enableInt) [subroutine, below of=copyData, yshift=-0.2cm] {Disable data received flag, enable interrupts};
+            \node (bar) [bar={enableInt}] at (enableInt.west) {};
+            \node (bar) [bar={enableInt}] at (enableInt.east) {};
+
+
+            \node (bufferFilled) [decision, below of=dataReceived, yshift=-5cm] {Buffer full? (\textbf{*2})};
+
+            \node (parseData) [subroutine, right of=bufferFilled, xshift=2.7cm] {Parse data (\textbf{*3})};
+            \node (bar) [bar={parseData}] at (parseData.west) {};
+            \node (bar) [bar={parseData}] at (parseData.east) {};
+
+
+
+            % CONNECTIONS
+            \draw [arrow] (start) -- (init);
+            \draw [arrow] (init) -- (join);
+            
+            \draw [arrow] (join) |- ([shift={(-1cm,-0.5cm)}]join.south) -| (measure);
+            \draw [arrow] (measure) -- (send);
+            \draw [arrow] (send) -| (lppInit);
+            \draw [arrow] (lppInit) -- (data0);
+
+            \draw [arrow] (data0) -- node[anchor=south] {yes} (addData0);
+            \draw [arrow] (data0) -- node[anchor=east] {no} (data1);
+            \draw [arrow] (addData0) -- (data1);
+
+            \draw [arrow] (data1) -- node[anchor=south] {yes} (addData1);
+            \draw [arrow] (data1) -- node[anchor=east] {no} (lppSend);
+            \draw [arrow] (addData1) -- (lppSend);
+
+            \draw [arrow] (lppSend) |- ([shift={(6.3cm,-0.5cm)}]lppSend.south) |- (sleep);
+            \draw [arrow] (sleep) -| (while);
+
+            \draw [arrow] (while) -| ([shift={(2.5cm,1.5cm)}]sleep.east) -- node[anchor=south, xshift=6.2cm, yshift=-4cm] {no} (measure);
+            \draw [arrow] (while) -- node[anchor=east] {yes} (dataReceived);
+
+            \draw [arrow] (dataReceived) -- node[anchor=south] {yes} (disableInt);
+            \draw [arrow] (dataReceived) -- node[anchor=east, yshift=1.2cm] {no} (bufferFilled);
+
+            \draw [arrow] (disableInt) -- (copyData);
+            \draw [arrow] (copyData) -- (enableInt);
+            \draw [arrow] (enableInt) -- ([shift={(-1.7cm,-0.7cm)}]enableInt.east) -- (bufferFilled);
+
+            \draw [arrow] (bufferFilled) node[anchor=east, yshift=-2cm] {no} |- ([shift={(-2.5cm,-0.7cm)}]bufferFilled.south) |- (while);
+            \draw [arrow] (bufferFilled) -- node[anchor=east, xshift=0.3cm, yshift=0.2cm] {yes} (parseData);
+            \draw [arrow] (parseData) |- ([shift={(-3cm,-1.2cm)}]bufferFilled.south) |- ([shift={(-1cm,2cm)}]while.south) (while);
+            
+
+        \end{tikzpicture}
+        %\caption{\label{fig:flowchart}Flowchart representing the main code-flow.}
+    \end{center}
+\end{figure}
+
+\end{document}
+
