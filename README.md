@@ -1,8 +1,9 @@
 # EFM32-RN2483-Masterbuoy
 
-The code is based on the [DRAMCO EFM32-RN2483-LoRa-Node example](https://github.com/DRAMCO/EFM32-RN2483-LoRa-Node) with functions from [dbprint](https://github.com/Fescron/dbprint) aswell.
+The code is based on the [DRAMCO EFM32-RN2483-LoRa-Node example](https://github.com/DRAMCO/EFM32-RN2483-LoRa-Node) with functions from [dbprint](https://github.com/Fescron/dbprint) aswell. It is designed for use on the [EMF32 Happy Ghecko board](https://www.silabs.com/products/development-tools/mcu/32-bit/efm32-happy-gecko-starter-kit).
 
-[This DRAMCO tutorial](https://dramco.be/tutorials/low-power-iot/technology-campus-ghent-2018/iot-development-environment/node) also has interesting info.
+- [The Things Network - Applications (Register LoRaWAN device)](https://console.thethingsnetwork.org/applications/)
+- [Cayenne Dashboard](https://cayenne.mydevices.com/cayenne/dashboard/start)
 
 ## 1 - Documentation
 
@@ -44,6 +45,8 @@ The example data corresponds with:
 
 
 ## 2 - Installation instructions (Simplicity Studo v4)
+
+[This DRAMCO tutorial](https://dramco.be/tutorials/low-power-iot/technology-campus-ghent-2018/iot-development-environment/node) also has interesting info about setting everything up.
 
 ### 2.1 - Import the files on this REPO as an existing project
 
