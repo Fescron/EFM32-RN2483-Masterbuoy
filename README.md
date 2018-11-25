@@ -21,9 +21,40 @@ The code is designed for use on the [EMF32 Happy Ghecko board](https://www.silab
 
 This code receives messages over UART (**115200 baudrate**) using interrupts, parses the characters back to numbers, repacks it into a LPP (Cayenne Low Power Payload) packet and sends the data to the cloud using a LoRaWAN network.
 
-### 1.1 - Structure of messages
+### 1.1 - Code flow
 
-### 1.1.1 - UART
+![Flowchart](/latex-flowchart/flowchart.png?raw=true "Flowchart")
+
+#### 1.1.1 - Extra notes on the flowchart
+- **(\*1):** If there was a line received using interrupts on UART *AND* there is at least one of the three buffers free, copy the received data to one of those buffers.
+- **(\*2):** Check if **one (of three)** or more buffers are filled *AND* at least one of the two data fields are free.
+- **(\*3):** Parse the data out of a used buffer into a data field.
+
+#### 1.1.2 - Processes on the flowchart
+- **INIT:**
+  - Initialize system & chip (clocks, ...)
+  - Initialize delay function
+  - Initialize interrupts (IRQ)
+  - Initialize LED functions to give feedback when there is an error.
+  - Initialize buttons and their interrupt functionality
+  - Initialize power management
+  - Initialize ADC for reading the battery voltage
+  - Initialize I²C for sensor readout
+  - Initialize UART using dbprint functionality for:
+    - Printing debug messages
+    - Getting input using interrupts
+    - Parsing characters to values
+- **JOIN:**
+  - Initialize LoRaWAN communications with *Over The Air Activation* (OTAA)
+- **MEASURE:**
+  - Read battery voltage
+  - Read relative humidity
+  - Read temperature
+    - **NOTE:** The sensor readouts are not really used since we have a limited amount of bytes we can send to the cloud.
+
+### 1.2 - Structure of messages
+
+#### 1.2.1 - UART
 
 The Received UART lines need to have the following structure (the data is in **decimal notation**):
 
@@ -38,7 +69,7 @@ The example data corresponds with:
 - **VBAT** = 3,25 V
   - **NOTE:** The VBAT data gets send to "the cloud" with a **bouy-ID-offset of "1"**!!
 
-### 1.1.2 - LPP
+#### 1.2.2 - LPP
 
 After parsing the UART characters back to numbers, the retransmitted [Cayenne Low Power Payload](https://github.com/myDevicesIoT/cayenne-docs/blob/master/docs/LORA.md) packet has the following structure (the data is in **hexadecimal notation**, *each column represents one byte*):
 
@@ -64,7 +95,7 @@ The example data corresponds with:
 
 `File > Import > General > Existing Projects`
 
-![instructions](https://dramco.be/tutorials/low-power-iot/technology-campus-ghent-2018/user/pages/03.iot-development-environment/02.Node/ezgif-3-c109845b4d-2.gif "instructions")
+![Instructions](https://dramco.be/tutorials/low-power-iot/technology-campus-ghent-2018/user/pages/03.iot-development-environment/02.Node/ezgif-3-c109845b4d-2.gif "Instructions")
 
 ### 2.2 - Add "dbprint" to the project
 
