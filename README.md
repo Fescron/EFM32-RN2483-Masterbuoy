@@ -23,6 +23,8 @@ This code receives messages over UART (**115200 baudrate**) using interrupts, pa
 
 ### 1.1 - Code flow
 
+The following flowchart mostly describes the added functionality. For the sake of completeness all of the logic states (INIT, ...) are added but not really further discussed. Most of the code was added in the state **SEND** and **SLEEP**.
+
 ![Flowchart](/latex-flowchart/flowchart.png?raw=true "Flowchart")
 
 #### 1.1.1 - Extra notes on the flowchart
@@ -30,7 +32,7 @@ This code receives messages over UART (**115200 baudrate**) using interrupts, pa
 - **(\*2):** Check if **one (of three)** or more buffers are filled *AND* at least one of the two data fields are free.
 - **(\*3):** Parse the data out of a used buffer into a free data field.
 
-#### 1.1.2 - Processes on the flowchart
+#### 1.1.2 - Processes (= states of the logic) on the flowchart
 - **INIT:**
   - Initialize system & chip (clocks, ...).
   - Initialize delay function.
