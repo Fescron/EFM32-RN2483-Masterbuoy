@@ -15,6 +15,8 @@ Added code is marked with ```/* BEGIN ADDED CODE ********/``` and ```/* END ADDE
 - [The Things Network - Applications (Register LoRaWAN device)](https://console.thethingsnetwork.org/applications/)
 - [Cayenne Dashboard](https://cayenne.mydevices.com/cayenne/dashboard/start)
 
+------
+
 ## 1 - Documentation
 
 This code receives messages over UART (**115200 baudrate**) using interrupts, parses the characters back to numbers, repacks it into a LPP (Cayenne Low Power Payload) packet and sends the data to the cloud using a LoRaWAN network.
@@ -53,6 +55,8 @@ This code receives messages over UART (**115200 baudrate**) using interrupts, pa
   - See flowchart.
 - **SLEEP:**
   - See flowchart.
+  
+------
 
 ### 1.2 - Structure of messages
 
@@ -88,6 +92,7 @@ The example data corresponds with:
 - **VBAT** = 0x0145 = 325d
   - **NOTE:** The VBAT data gets send to "the cloud" with a **bouy-ID-offset of "1"**!!
 
+------
 
 ## 2 - Installation instructions (Simplicity Studo v4)
 
