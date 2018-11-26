@@ -52,6 +52,6 @@ GNU ARM v* - Release/*
 GNU ARM v* - Release/**/*
 
 *.prefs
-*.prefs
-*.html
+.prefs
+.html
 *.html
