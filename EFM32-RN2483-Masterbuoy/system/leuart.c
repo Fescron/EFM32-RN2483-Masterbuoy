@@ -16,6 +16,9 @@
  *
  *  Description: This file contains the LEUART (serial communication)
  *  	functionality required by the RN2483 LoRa modem.
+ *
+ * Code added by Brecht Van Eeckhoudt.
+ *
  */
 
 #include <stdint.h>

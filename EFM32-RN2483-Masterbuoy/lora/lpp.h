@@ -15,6 +15,9 @@
  *       Author: Geoffrey Ottoy
  *
  *  Description: Header file for lpp.c
+ *
+ *  Code added by Brecht Van Eeckhoudt.
+ *
  */
 
 

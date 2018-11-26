@@ -15,6 +15,9 @@
  *       Author: Geoffrey Ottoy
  *
  *  Description: Basic Low Power Payload (LPP) functionality.
+ *
+ *  Code added by Brecht Van Eeckhoudt.
+ *
  */
 
 #include <stdlib.h>
@@ -122,7 +125,7 @@ bool LPP_AddBuoy(LPP_Buffer_t *b, uint8_t id, uint8_t rssi, uint16_t vbat)
 	b->buffer[b->fill++] = rssi;
 
 	/* VBAT value */
-	b->buffer[b->fill++] = id + 1;
+	b->buffer[b->fill++] = (id + 1);
 	b->buffer[b->fill++] = LPP_ANALOG_INPUT;
 	b->buffer[b->fill++] = (uint8_t)((0xFF00 & vbat) >> 8);
 	b->buffer[b->fill++] = (uint8_t)(0x00FF & vbat);

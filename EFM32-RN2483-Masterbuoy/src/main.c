@@ -14,6 +14,9 @@
  *      Created: 2018-01-18
  *
  *  Description: Main application.
+ *
+ *  Code added by Brecht Van Eeckhoudt.
+ *
  */
 
 #include <stdbool.h>
