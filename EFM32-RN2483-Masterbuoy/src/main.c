@@ -34,6 +34,11 @@
 #include "bme280.h"
 
 /* BEGIN ADDED CODE *****************************************************************************************/
+
+/*
+ * TODO: Stop using Over The Air Activation...
+ */
+
 /* NOTES:
  *
  *   Added code in the following files when starting from the DRAMCO example:
@@ -135,7 +140,7 @@ void PB0_Pressed(void){
 void LED_ERROR(uint8_t err){
 	/* BEGIN ADDED CODE *****************************************************************************************/
 	dbprint(">> LED_ERROR (");
-	dbprintUint(err);
+	dbprintInt(err);
 	dbprintln(")");
 	/* END ADDED CODE *******************************************************************************************/
 
