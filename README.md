@@ -94,7 +94,8 @@ The example data corresponds with:
 - **VBAT** = 0x0145 = 325d
   - **NOTE:** The VBAT data gets send to "the cloud" with a **bouy-ID-offset of "1"**!!
 
-<!--- -----
+<!--
+-----
 
 ## 2 - Installation instructions (Simplicity Studo v4)
 
@@ -114,4 +115,4 @@ See [dbprint GIT repo](https://github.com/Fescron/dbprint).
 
 These settings are in the file `src/my_lora_device.h`.
 
---->
+-->
