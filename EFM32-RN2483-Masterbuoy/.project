@@ -26,11 +26,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>dbprint-scr</name>
-			<type>2</type>
-			<location>/home/brecht/Qsync/Documents/1-Github-Repositories/dbprint/dbprint-scr</location>
-		</link>
-		<link>
 			<name>Drivers/dmactrl.c</name>
 			<type>1</type>
 			<locationURI>STUDIO_SDK_LOC/hardware/kit/common/drivers/dmactrl.c</locationURI>

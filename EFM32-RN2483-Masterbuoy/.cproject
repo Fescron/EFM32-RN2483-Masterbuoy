@@ -30,7 +30,12 @@
 						<toolChain id="com.silabs.ide.si32.gcc.cdt.managedbuild.toolchain.exe.485864889" name="Si32 GNU ARM" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.toolchain.exe">
 							<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.toolchain.debug.level.1252172667" name="Debug Level" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.toolchain.debug.level" value="com.silabs.ide.si32.gcc.cdt.managedbuild.toolchain.debug.level.default" valueType="enumerated"/>
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.GNU_ELF;com.silabs.ss.framework.debugger.core.BIN;com.silabs.ss.framework.debugger.core.HEX;com.silabs.ss.framework.debugger.core.S37;com.silabs.ss.framework.debugger.core.EBL;com.silabs.ss.framework.debugger.core.GBL" id="com.silabs.ide.si32.gcc.cdt.managedbuild.target.gnu.platform.base.68093913" isAbstract="false" name="Debug Platform" osList="win32,linux,macosx" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.target.gnu.platform.base"/>
-							<builder buildPath="${workspace_loc:/RN2483_test3}/GNU ARM v4.9.3 - Debug" id="com.silabs.ide.si32.gcc.cdt.managedbuild.target.gnu.builder.base.227612508" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Si32 GNU ARM Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.target.gnu.builder.base"/>
+							<builder buildPath="${workspace_loc:/RN2483_test3}/GNU ARM v4.9.3 - Debug" id="com.silabs.ide.si32.gcc.cdt.managedbuild.target.gnu.builder.base.227612508" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Si32 GNU ARM Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.target.gnu.builder.base">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="GNU ARM v4.9.3 - Debug"/>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="GNU ARM v4.9.3 - Release"/>
+								</outputEntries>
+							</builder>
 							<tool id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.base.212099230" name="GNU ARM C Compiler" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.base">
 								<option id="gnu.c.compiler.option.optimization.level.786963052" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" value="gnu.c.optimization.level.none" valueType="enumerated"/>
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.def.symbols.208630838" name="Defined symbols (-D)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.def.symbols" valueType="definedSymbols">
@@ -40,19 +45,19 @@
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.debug.builtin.439132894" name="Always branch to builtin functions (-fno-builtin)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.debug.builtin" value="true" valueType="boolean"/>
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.debug.prolog.1959939391" name="Generate debugger-friendly prologs (-mno-sched-prolog)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.debug.prolog" value="true" valueType="boolean"/>
 								<option id="gnu.c.compiler.option.include.paths.1834607856" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/emdrv/common/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/emdrv/rtcdrv/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/common/drivers&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/CMSIS/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/SLSTK3400A_EFM32HG/config&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/common/bsp&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/Device/SiliconLabs/EFM32HG/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/emlib/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/util}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lora}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/sensors}&quot;"/>
-									<listOptionValue builtIn="false" value="/home/brecht/Qsync/Documents/1-Github-Repositories/dbprint/dbprint-inc"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/platform/emdrv/common/inc"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/platform/emdrv/rtcdrv/inc"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/hardware/kit/common/drivers"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/platform/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/hardware/kit/SLSTK3400A_EFM32HG/config"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/hardware/kit/common/bsp"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/platform/Device/SiliconLabs/EFM32HG/Include"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/platform/emlib/inc"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/EFM32-RN2483-Masterbuoy/dbprint}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/EFM32-RN2483-Masterbuoy/sensors}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/EFM32-RN2483-Masterbuoy/system}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/EFM32-RN2483-Masterbuoy/lora}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/EFM32-RN2483-Masterbuoy/util}&quot;"/>
 								</option>
 								<inputType id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input.1478782805" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -63,21 +68,22 @@
 							</tool>
 							<tool id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.assembler.base.1651746312" name="GNU ARM Assembler" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.assembler.base">
 								<option id="gnu.both.asm.option.include.paths.1907037196" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/emdrv/common/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/emdrv/rtcdrv/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/common/drivers&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/CMSIS/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/SLSTK3400A_EFM32HG/config&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/common/bsp&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/Device/SiliconLabs/EFM32HG/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/emlib/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/util}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lora}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/sensors}&quot;"/>
-									<listOptionValue builtIn="false" value="/home/brecht/Qsync/Documents/1-Github-Repositories/dbprint/dbprint-inc"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/platform/emdrv/common/inc"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/platform/emdrv/rtcdrv/inc"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/hardware/kit/common/drivers"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/platform/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/hardware/kit/SLSTK3400A_EFM32HG/config"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/hardware/kit/common/bsp"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/platform/Device/SiliconLabs/EFM32HG/Include"/>
+									<listOptionValue builtIn="false" value="/home/brecht/Programs/SimplicityStudio_v4/developer/sdks/gecko_sdk_suite/v2.4/platform/emlib/inc"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/EFM32-RN2483-Masterbuoy/dbprint}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/EFM32-RN2483-Masterbuoy/sensors}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/EFM32-RN2483-Masterbuoy/util}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/EFM32-RN2483-Masterbuoy/lora}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/EFM32-RN2483-Masterbuoy/system}&quot;"/>
 								</option>
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.as.def.symbols.1267235749" name="Defined symbols (-D)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.as.def.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="DEBUG=1"/>
 									<listOptionValue builtIn="false" value="EFM32HG322F64=1"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.298561464" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
@@ -85,9 +91,8 @@
 							</tool>
 							<tool id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.base.271758587" name="GNU ARM C Linker" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.base">
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.nostdlibs.774007597" name="No startup or default libs (-nostdlib)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.nostdlibs" value="false" valueType="boolean"/>
-								<option id="gnu.c.link.option.libs.186512073" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="m"/>
-								</option>
+								<option id="gnu.c.link.option.libs.186512073" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs"/>
+								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.category.ordering.selection.1672635433" name="Linker input ordering" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.category.ordering.selection" value="./util/delay.o;./util/util.o;./system/adc.o;./system/buttons.o;./system/iic.o;./system/irq.o;./system/led.o;./system/leuart.o;./system/pm.o;./system/system.o;./src/main.o;./sensors/bme280.o;./sensors/lis3dh.o;./sensors/si7021.o;./lora/lora.o;./lora/lpp.o;./lora/rn2483.o;./emlib/em_adc.o;./emlib/em_cmu.o;./emlib/em_core.o;./emlib/em_dma.o;./emlib/em_emu.o;./emlib/em_gpio.o;./emlib/em_i2c.o;./emlib/em_leuart.o;./emlib/em_rmu.o;./emlib/em_rtc.o;./emlib/em_system.o;./emlib/em_usart.o;./dbprint/dbprint.o;./Drivers/dmactrl.o;./Drivers/i2cspm.o;./Drivers/rtcdriver.o;./CMSIS/EFM32HG/startup_efm32hg.o;./CMSIS/EFM32HG/system_efm32hg.o" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1118710212" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -98,8 +103,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="dbprint-scr|.git/lfs|.git/objects|.git/refs/tags" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="dbprint-scr"/>
+						<entry excluding=".git/objects|.git/refs/tags|.git/lfs" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

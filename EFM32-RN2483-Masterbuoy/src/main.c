@@ -36,7 +36,7 @@
 /* BEGIN ADDED CODE *****************************************************************************************/
 
 /*
- * TODO: Stop using Over The Air Activation...
+ * TODO: Display received data in console
  */
 
 /* NOTES:
@@ -351,7 +351,7 @@ int main(void){
 #ifdef SKIPLORA
 				LoRa_Sleep(A_MINUTE, &wakeUp);
 #else
-				LoRa_Sleep(5*A_MINUTE, &wakeUp);
+				LoRa_Sleep(2*A_MINUTE, &wakeUp);
 #endif
 
 				/* END ADDED CODE *******************************************************************************************/

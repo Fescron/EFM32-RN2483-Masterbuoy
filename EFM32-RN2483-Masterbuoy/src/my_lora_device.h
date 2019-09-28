@@ -15,6 +15,8 @@
  *       Author: Geoffrey Ottoy
  *
  *  Description: Change to your desired settings.
+ *
+ *  Code added by Brecht Van Eeckhoudt.
  */
 
 #ifndef _MY_LORA_DEVICE_H_
@@ -53,11 +55,11 @@
 
 /* BEGIN ADDED CODE *****************************************************************************************/
 /* 64-bit device ID */
-#define LORAWAN_DEVICE_EUI			"0000000000000000"
+#define LORAWAN_DEVICE_EUI			"0034B12486602345"
 /* 64-bit application ID */
-#define LORAWAN_APPLICATION_EUI     		"0000000000000000"
+#define LORAWAN_APPLICATION_EUI     "70B3D57ED000BD0C"
 /* 128-bit AES key */
-#define LORAWAN_APPLICATION_KEY     		"00000000000000000000000000000000"
+#define LORAWAN_APPLICATION_KEY     "E6DB9A307CBBA197B6A4E2B0F3E125C7"
 /* END ADDED CODE *******************************************************************************************/
 
 // Don't change
@@ -66,11 +68,11 @@
 #elif OVER_THE_AIR_ACTIVATION == 0
 // Copy your settings here
 /* 32-bit device address */
-#define LORAWAN_DEVICE_ADDRESS     	"DEV_ADDR"
+#define LORAWAN_DEVICE_ADDRESS     	"260113E4"
 /* 128-bit AES key */
-#define LORAWAN_NWKSKEY             "YOUR_SECRET_AES_NWK_SESSION_KEY_"
+#define LORAWAN_NWKSKEY             "11AD5C7C376730C141F3F5ECF7300F6A"
 /* 128-bit AES key */
-#define LORAWAN_APPSKEY             "YOUR_SECRET_AES_APP_SESSION_KEY_"
+#define LORAWAN_APPSKEY             "3819B0457377405A73516487C234F6E2"
 // Don't change
 #define JOIN_MECHANISM				ABP
 #else
