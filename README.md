@@ -94,22 +94,24 @@ The example data corresponds with:
 - **VBAT** = 0x0145 = 325d
   - **NOTE:** The VBAT data gets send to "the cloud" with a **bouy-ID-offset of "1"**!!
 
-// ------
-// 
-// ## 2 - Installation instructions (Simplicity Studo v4)
-// 
-// [This DRAMCO tutorial](https://dramco.be/tutorials/low-power-iot/technology-campus-ghent-2018/iot-development-environment/node) also has interesting info about setting everything up.
-// 
-// ### 2.1 - Import the files on this REPO as an existing project
-// 
-// `File > Import > General > Existing Projects`
-// 
-// ![Instructions](https://dramco.be/tutorials/low-power-iot/technology-campus-ghent-2018/user/pages/03.iot-development-environment/02.Node/ezgif-3-c109845b4d-2.gif "Instructions")
-// 
-// ### 2.2 - Add "dbprint" to the project
-// 
-// See [dbprint GIT repo](https://github.com/Fescron/dbprint).
-// 
-// ### 2.3 - Change settings for the specific LoRaWAN application
-// 
-// These settings are in the file `src/my_lora_device.h`.
+<!--- -----
+
+## 2 - Installation instructions (Simplicity Studo v4)
+
+[This DRAMCO tutorial](https://dramco.be/tutorials/low-power-iot/technology-campus-ghent-2018/iot-development-environment/node) also has interesting info about setting everything up.
+
+### 2.1 - Import the files on this REPO as an existing project
+
+`File > Import > General > Existing Projects`
+
+![Instructions](https://dramco.be/tutorials/low-power-iot/technology-campus-ghent-2018/user/pages/03.iot-development-environment/02.Node/ezgif-3-c109845b4d-2.gif "Instructions")
+
+### 2.2 - Add "dbprint" to the project
+
+See [dbprint GIT repo](https://github.com/Fescron/dbprint).
+
+### 2.3 - Change settings for the specific LoRaWAN application
+
+These settings are in the file `src/my_lora_device.h`.
+
+--->
