@@ -2,6 +2,7 @@
 
 The code is based on the [DRAMCO EFM32-RN2483-LoRa-Node example](https://github.com/DRAMCO/EFM32-RN2483-LoRa-Node) with functions from [dbprint](https://github.com/Fescron/dbprint) aswell and is designed for use on the [EMF32 Happy Ghecko board](https://www.silabs.com/products/development-tools/mcu/32-bit/efm32-happy-gecko-starter-kit).
 
+
 Added code is marked with ```/* BEGIN ADDED CODE ********/``` and ```/* END ADDED CODE ********/```. Code was added in the following files when starting from the DRAMCO example:
 - ```src/my_lora_device.h``` (```LORAWAN_DEVICE_EUI```, ```LORAWAN_APPLICATION_EUI``` and ```LORAWAN_APPLICATION_KEY``` hidden)
 - ```lora/lpp.c```
